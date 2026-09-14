@@ -33,15 +33,34 @@ max_wait_timeout_ms = 1500000
 
 ## View live subagent progress
 
-When the Sol planner spawns a worker, open a second terminal, tab, or split
-while the main Codex TUI remains running and execute:
+When the Sol planner spawns a worker, inspect it from the same interactive chat
+by typing:
+
+```text
+/agent
+```
+
+`/agents` is an alias. Select the child to watch its live transcript, rendered
+tool activity, and status updates, or select the parent/root entry to return.
+Completed children remain selectable for transcript inspection. V2 child views
+may be read-only; treat the picker as a way to observe and switch context, not
+as a promise of direct editing or steering inside the child thread.
+
+For a cross-session overview, open a second terminal, tab, or split while the
+main Codex TUI remains running and execute:
 
 ```bash
 codex agents
 ```
 
-This native shell subcommand is separate from the `/agents` slash command. It
-connects to the shared local app-server daemon and shows projects, tasks, agent
-names, and statuses without asking the planner for status or consuming model
-input tokens. Follow the command center's on-screen help and key hints for
-navigation; do not rely on undocumented key bindings.
+This native shell subcommand is separate from the `/agent` and `/agents` slash
+commands. It connects to the shared local app-server daemon and shows projects,
+tasks, agent names, and statuses without asking the planner for status or
+consuming model input tokens. Follow the command center's on-screen help and
+key hints for navigation; do not rely on undocumented key bindings.
+
+If the parent transcript says a worker started but `/agent` does not list it,
+the missing entry is a Codex app-server/TUI registration or refresh problem;
+the profile's `agents.enabled` and `features.multi_agent_v2` settings cannot
+repair it. Verify with `codex agents`, then collect `codex doctor` output and
+upgrade or report the CLI issue.

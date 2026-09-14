@@ -17,13 +17,27 @@ Every delegation states a concrete outcome, bounded scope, constraints, and acce
 
 Use descriptive agent names and concise task descriptions so the native command
 center can identify each worker. After the first spawn in a task, tell the user
-once that live progress is available from a separate terminal with
-`codex agents`. This is a shell subcommand, not the `/agents` slash command:
-the user should open it in a second terminal, tab, or split while the main
-Codex TUI is running. It connects to the shared local app-server daemon and
-shows projects, tasks, and statuses without spending model input tokens on
-status prompts. Let the command center's on-screen help and key hints define
-navigation; do not document undocumented key bindings.
+once: `To watch it live, type /agent (or /agents) and select the child thread.`
+In the interactive TUI, this opens the native in-chat picker. Selecting a child
+switches the active view to its live transcript, rendered tool activity, and
+status updates; selecting the parent/root entry returns to the planner. V2
+child views may be read-only, so do not promise direct editing or steering from
+the selected child.
+
+Keep `codex agents` as an optional cross-session overview: it is a shell
+subcommand, not the `/agent` or `/agents` slash command. The user can open it
+in a second terminal, tab, or split while the main Codex TUI remains running.
+It connects to the shared local app-server daemon and shows projects, tasks,
+and statuses without spending model input tokens on status prompts. Let the
+command center's on-screen help and key hints define navigation; do not
+document undocumented key bindings.
+
+If the parent transcript says a child started but `/agent` does not list it,
+call this out as a Codex app-server/TUI registration or refresh problem. The
+project's `agents.enabled` and `features.multi_agent_v2` settings cannot repair
+that missing picker entry. Suggest `codex agents` and `codex doctor`, then an
+upgrade or upstream report; do not promise that another prompt will expose the
+child.
 
 Do not automatically review worker output. The primary agent and orchestrator must not inspect or diff-review worker-authored code, and must not spawn a reviewer. Accept the worker's report and test evidence. Review that code only after the user personally reports a bug and asks for diagnosis or repair.
 

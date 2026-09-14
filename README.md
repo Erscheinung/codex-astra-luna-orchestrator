@@ -216,20 +216,42 @@ $adaptive-orchestrator
 
 ## View live subagent progress
 
-Codex has a native terminal command center for inspecting spawned agents while
-the main task continues. In a second terminal, tab, or split, run:
+The interactive Codex TUI has a native in-chat agent picker. While the main task
+continues, type:
+
+```text
+/agent
+```
+
+`/agents` is an alias. Select the parent or a child thread in the picker to
+switch the active view. A selected child shows the live transcript, rendered
+tool activity, and status updates that Codex exposes for that thread; completed
+children remain available for transcript inspection. Use `/agent` again and
+select the parent/root entry to return. V2 child views are primarily for
+observation and may be read-only, so do not assume that a selected child is a
+second editable chat.
+
+Codex also has a native terminal command center for a cross-session overview.
+In a second terminal, tab, or split, run:
 
 ```bash
 codex agents
 ```
 
-This is a shell subcommand, not the `/agents` slash command. Keep the main
-Codex TUI running: `codex agents` connects to the shared local app-server
-daemon and shows the available projects, tasks, agent names, and statuses. It
-reads that live state directly, so checking progress does not require a status
-prompt in the main thread or consume model input tokens. Use the command
-center's on-screen help and key hints for arrow-key navigation; key bindings
-can vary by Codex release and are intentionally not duplicated here.
+This shell subcommand is separate from the `/agent` and `/agents` slash
+commands. Keep the main Codex TUI running: `codex agents` connects to the
+shared local app-server daemon and shows available projects, tasks, agent names,
+and statuses. It reads that live state directly, so checking the overview does
+not require a status prompt in the main thread or consume model input tokens.
+Use the command center's on-screen help and key hints for navigation; key
+bindings can vary by Codex release and are intentionally not duplicated here.
+
+If the parent transcript says a child started but `/agent` reports no agents or
+does not list that child, this is a Codex app-server/TUI registration or refresh
+failure, not something project instructions can repair. Verify the child in
+`codex agents` and collect `codex doctor` output; upgrade or report the CLI
+issue rather than promising that a prompt or config change will make the child
+appear.
 
 For command-line options, run `codex agents --help`.
 
