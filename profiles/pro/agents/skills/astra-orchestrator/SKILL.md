@@ -41,6 +41,15 @@ activity, and status updates; selecting the parent/root entry returns to the
 planner. V2 child views may be read-only, so do not promise direct editing or
 steering from the selected child.
 
+The picker is scoped to the active root thread and its descendants; it does not
+merge children from other resumed or top-level sessions. If `codex agents`
+shows a child under another parent, tell the user to resume that parent (or the
+child directly) with `codex resume <thread-id>` before using `/agent`.
+If the child belongs to the active root but was spawned before this TUI was
+resumed, resume the parent once more so the picker can backfill descendants;
+the 0.154 TUI can otherwise report no agents after missing the child-start
+event.
+
 Keep `codex agents` as an optional cross-session overview. It is a shell
 subcommand, not the `/agent` or `/agents` slash command: the user can open it
 in a second terminal, tab, or split while the main Codex TUI is running. It

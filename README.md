@@ -231,6 +231,23 @@ select the parent/root entry to return. V2 child views are primarily for
 observation and may be read-only, so do not assume that a selected child is a
 second editable chat.
 
+The picker is scoped to the active root thread and its descendants; it does not
+merge children from other resumed or top-level sessions. If `codex agents`
+shows a child under another parent, resume that parent (or the child directly)
+with:
+
+```bash
+codex resume <thread-id>
+```
+
+Then use `/agent` in that session.
+
+If the child belongs to the active root but was spawned before this TUI was
+resumed, restart/resume the parent once with `codex resume <parent-thread-id>`;
+the 0.154 picker backfills descendants during resume. A fresh picker that has
+missed the child-start event can otherwise report no agents before its first
+refresh, which requires an upstream TUI fix.
+
 Codex also has a native terminal command center for a cross-session overview.
 In a second terminal, tab, or split, run:
 

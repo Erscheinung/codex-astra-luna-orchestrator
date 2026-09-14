@@ -46,6 +46,16 @@ Completed children remain selectable for transcript inspection. V2 child views
 may be read-only; treat the picker as a way to observe and switch context, not
 as a promise of direct editing or steering inside the child thread.
 
+The picker is scoped to the active root thread and its descendants. It does not
+merge children from another resumed or top-level session. If `codex agents`
+shows a worker under a different parent, resume that parent (or the worker
+directly) with `codex resume <thread-id>`, then use `/agent`.
+
+If the worker belongs to the active root but was spawned before this TUI was
+resumed, resume the parent once more so the picker can backfill descendants.
+The 0.154 TUI can otherwise report no agents after missing the child-start
+event; that cache-refresh path requires an upstream fix.
+
 For a cross-session overview, open a second terminal, tab, or split while the
 main Codex TUI remains running and execute:
 
