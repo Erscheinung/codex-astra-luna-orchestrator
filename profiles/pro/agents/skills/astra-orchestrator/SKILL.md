@@ -30,6 +30,18 @@ The root and reviewer use Astra; routine execution subagents use Luna.
 
 Do not override a Luna subagent to a more expensive model unless the user explicitly asks for escalation or a Luna worker reports that the task requires higher-level reasoning.
 
+## Live subagent visibility
+
+Use descriptive agent names and concise task descriptions so the native command
+center can identify each worker. After spawning the first subagent for a task,
+tell the user once that live progress is available from a separate terminal
+with `codex agents`. This is a shell subcommand, not the `/agents` slash
+command: the user should open it in a second terminal, tab, or split while the
+main Codex TUI is running. It connects to the shared local app-server daemon
+and shows projects, tasks, and statuses without spending model input tokens on
+status prompts. Let the command center's on-screen help and key hints define
+navigation; do not document undocumented key bindings.
+
 ---
 
 ## Delegation gate

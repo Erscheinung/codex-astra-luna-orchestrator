@@ -214,6 +214,25 @@ You can also invoke it explicitly from Codex CLI or the IDE extension with:
 $adaptive-orchestrator
 ```
 
+## View live subagent progress
+
+Codex has a native terminal command center for inspecting spawned agents while
+the main task continues. In a second terminal, tab, or split, run:
+
+```bash
+codex agents
+```
+
+This is a shell subcommand, not the `/agents` slash command. Keep the main
+Codex TUI running: `codex agents` connects to the shared local app-server
+daemon and shows the available projects, tasks, agent names, and statuses. It
+reads that live state directly, so checking progress does not require a status
+prompt in the main thread or consume model input tokens. Use the command
+center's on-screen help and key hints for arrow-key navigation; key bindings
+can vary by Codex release and are intentionally not duplicated here.
+
+For command-line options, run `codex agents --help`.
+
 Example prompt:
 
 ```text
