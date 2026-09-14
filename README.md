@@ -1,8 +1,8 @@
-# Codex Astra Orchestrator + Luna Subagents
+# Codex Adaptive Orchestrator + Luna Subagents
 
-A configurable Codex setup where GPT-6 Astra is the root/orchestrator and reviewer, while GPT-5.6 Luna is the default and pinned model for execution subagents.
+A configurable Codex setup with separate Pro and Plus routing. The Plus profile uses GPT-5.6 Sol for planning and GPT-5.6 Luna at xhigh for fresh-context implementation workers, without automatic review.
 
-The installer asks which Codex plan you are on. Pro uses GPT-6 Astra at medium reasoning to orchestrate and GPT-5.6 Luna at max reasoning for execution subagents. Plus uses GPT-5.6 Luna at max reasoning to orchestrate and medium reasoning for execution subagents. Both plans retain the separate GPT-6 Astra reviewer at low reasoning.
+The installer asks which Codex plan you are on. Pro retains the original Astra/Luna topology. Plus uses adaptive routing: the Sol primary agent owns scope and delegation, a bounded Luna worker owns routine implementation and focused validation, and specialists are used only when the task warrants them. A Sol worker is available when the user requests it or Luna is impractical because of usage, credits, or availability.
 
 ## Layout
 
@@ -14,7 +14,7 @@ The installer asks which Codex plan you are on. Pro uses GPT-6 Astra at medium r
 │   │   └── agents/          (skills/astra-orchestrator/SKILL.md)
 │   └── plus/
 │       ├── codex/           (config.toml and agents/*.toml)
-│       └── agents/          (skills/astra-orchestrator/SKILL.md)
+│       └── agents/          (skills/adaptive-orchestrator/SKILL.md)
 ├── guides/
 │   ├── fast-iteration.md
 │   ├── complex-repo-work.md
@@ -34,10 +34,10 @@ The installer asks which Codex plan you are on. Pro uses GPT-6 Astra at medium r
 
 | Role or setting | Plus | Pro |
 |---|---|---|
-| Orchestrator | GPT-5.6 Luna — max | GPT-6 Astra — medium |
-| Explorer, worker, tester, researcher | GPT-5.6 Luna — medium | GPT-5.6 Luna — max |
-| Default subagent | GPT-5.6 Luna — medium | GPT-5.6 Luna — max |
-| Independent reviewer | GPT-6 Astra — low | GPT-6 Astra — low |
+| Orchestrator | GPT-5.6 Sol — low | GPT-6 Astra — medium |
+| Implementation worker | GPT-5.6 Luna — xhigh | GPT-5.6 Luna — max |
+| Default subagent | GPT-5.6 Luna — xhigh | GPT-5.6 Luna — max |
+| Independent reviewer | Not installed; only review after a user-reported bug | GPT-6 Astra — low |
 | Concurrent subagent limit | 4 | 4 |
 
 ### Pro — `profiles/pro/codex/config.toml`
@@ -59,8 +59,8 @@ default_subagent_reasoning_effort = "max"
 ### Plus — `profiles/plus/codex/config.toml`
 
 ```toml
-model = "gpt-5.6-luna"
-model_reasoning_effort = "max"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "low"
 
 approval_policy = "on-request"
 sandbox_mode = "workspace-write"
@@ -69,20 +69,28 @@ sandbox_mode = "workspace-write"
 enabled = true
 max_concurrent_threads_per_session = 4
 default_subagent_model = "gpt-5.6-luna"
-default_subagent_reasoning_effort = "medium"
+default_subagent_reasoning_effort = "xhigh"
+
+[features]
+multi_agent_v2 = true
+
+[multi_agent_v2]
+min_wait_timeout_ms = 1500000
+default_wait_timeout_ms = 1500000
+max_wait_timeout_ms = 1500000
 ```
 
 The installer copies `profiles/<plan>/codex` to `.codex` and
 `profiles/<plan>/agents` to `.agents` in the target repository. Each profile
 is ready to copy, with no configuration rewriting during setup.
 
-Each role file is explicitly pinned to its intended model: Luna for explorer, worker, tester, and researcher; Astra for reviewer. This means changing only `default_subagent_model` will affect generic spawned agents, but not the named roles.
+The Plus worker is explicitly pinned to Luna xhigh. Its `sol_worker` fallback is explicitly pinned to Sol xhigh. The Plus profile intentionally does not install a reviewer.
 
-The four Luna role files explicitly set `model_reasoning_effort = "max"` in the Pro profile and `"medium"` in the Plus profile. The reviewer keeps its explicit `low` effort in both.
+The Pro profile retains its original role assignments. In Plus, exploration and research remain optional, while the implementation worker owns focused validation rather than forcing a separate test/review pipeline.
 
 When updating an existing installation, copy the role files along with `config.toml` from the selected profile. Replace `<plan>` below with `pro` or `plus`.
 
-If you want all named roles, including the reviewer, to follow the `[agents]` defaults, remove both the `model` and `model_reasoning_effort` overrides from their role files.
+To make a named role follow `[agents]` defaults, remove both its `model` and `model_reasoning_effort` overrides.
 
 ## Project setup
 
@@ -132,19 +140,18 @@ Next, choose your Codex plan:
 ```text
 Codex plan:
   1) Pro  - GPT-6 Astra orchestrates, GPT-5.6 Luna executes, GPT-6 Astra reviews
-  2) Plus - GPT-5.6 Luna (max reasoning) orchestrates, GPT-5.6 Luna executes, GPT-6 Astra reviews
+  2) Plus - GPT-5.6 Sol plans, GPT-5.6 Luna (xhigh) implements, review only after a user-reported bug
 Select plan [1/2] (default 1):
 ```
 
 The selected configuration sets both the root and default subagent reasoning.
-Agent role files are shared between plans: explorer, worker, tester, and
-researcher use Luna at the plan's default effort; the reviewer uses Astra at low
-effort on both plans.
+Agent role files are plan-specific. Plus uses an xhigh Luna implementation
+worker and an opt-in xhigh Sol fallback; it does not install a reviewer.
 
 The installer then asks whether to install each component:
 
 - `profiles/<plan>/codex` contains the root configuration and agent role profiles, installed as `.codex`.
-- `profiles/<plan>/agents` contains the `astra-orchestrator` skill, installed as `.agents`.
+- `profiles/<plan>/agents` contains the plan's orchestration skill, installed as `.agents`.
 - `AGENTS.md` gives Codex the project-level orchestration instructions. If it
   already exists, setup appends the instructions and preserves its contents.
   Re-running setup skips the append when the same instructions are already
@@ -182,10 +189,10 @@ For agents, copy the TOML files from `profiles/<plan>/codex/agents/` to:
 ~/.codex/agents/
 ```
 
-For the skill, copy `profiles/<plan>/agents/skills/astra-orchestrator/` to:
+For the Plus skill, copy `profiles/plus/agents/skills/adaptive-orchestrator/` to:
 
 ```text
-~/.agents/skills/astra-orchestrator/
+~/.codex/skills/adaptive-orchestrator/
 ```
 
 Merge the settings from `profiles/pro/codex/config.toml` (Pro) or `profiles/plus/codex/config.toml`
@@ -204,21 +211,20 @@ Codex may select the skill automatically when the task matches its description.
 You can also invoke it explicitly from Codex CLI or the IDE extension with:
 
 ```text
-$astra-orchestrator
+$adaptive-orchestrator
 ```
 
 Example prompt:
 
 ```text
-$astra-orchestrator
+$adaptive-orchestrator
 
 Implement the new invoice export endpoint.
-Have explorer map the existing invoice/export path first.
-Use workers for bounded implementation, tester for verification,
-and reviewer for an independent final review.
+Use one bounded worker to implement and run focused validation.
+Do not create a review stage unless I later report a bug.
 ```
 
-## Suggested topology
+## Pro topology
 
 ```text
                  GPT-6 Astra
@@ -254,10 +260,7 @@ For larger codebases:
 - start with your plan's Luna default and adjust based on results
 - use 6-8 concurrent threads, only when tasks are actually independent
 
-For strict parent/child separation:
-- keep explorer/reviewer/researcher read-only
-- keep worker/tester workspace-write
-- leave the root in workspace-write so it can integrate changes
+For the Plus profile, prefer a single bounded Luna worker for ordinary implementation. Add specialists only when the task materially benefits, and do not create an automatic review stage.
 
 ## Token usage
 
@@ -276,21 +279,19 @@ scripts/token_usage.py --latest --date 2026-09-07
 See [`guides/token-usage.md`](guides/token-usage.md) for a measurement
 protocol, one sample run with real numbers, and tips for reducing usage.
 
-Plus users: the root thread is the largest line item, so running it on Luna
-saves the most. Selecting `Plus` in the installer does this for you; for a
-manual or global setup see [`guides/plus-plan.md`](guides/plus-plan.md):
+Plus users: the root thread owns planning and delegation on Sol, while routine implementation runs in a fresh Luna context. For a manual or global setup see [`guides/plus-plan.md`](guides/plus-plan.md):
 
 ```toml
 # Root
-model = "gpt-5.6-luna"
-model_reasoning_effort = "max"
+model = "gpt-5.6-sol"
+model_reasoning_effort = "low"
 ```
 
 ## Important behavior
 
 Explicit model choices during a spawn override `[agents]` defaults. Custom agent files that specify `model` or `model_reasoning_effort` also take precedence over inherited defaults.
 
-The execution role files are pinned to Luna intentionally, while the reviewer is pinned to Astra for independent final review. Astra remains the orchestrator unless you deliberately change the role configuration.
+The Plus implementation role is pinned to Luna xhigh, with an opt-in Sol fallback. The Pro profile retains the original Luna execution roles and Astra reviewer.
 
 ## License
 

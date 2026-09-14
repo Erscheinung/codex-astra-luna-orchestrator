@@ -1,41 +1,32 @@
 # Plus Plan
 
-Choose this profile for a Luna root at `max` reasoning and Luna execution
-subagents at `medium` reasoning, with an Astra reviewer at `low`.
+Choose this profile for a GPT-5.6 Sol primary agent at low reasoning and fresh-context GPT-5.6 Luna implementation workers at xhigh reasoning.
 
-The installers (`setup.sh`, `setup.ps1`) ask for your plan and install this
-profile automatically when you select `Plus`. Setup copies
-`profiles/plus/codex/` to `.codex/` and `profiles/plus/agents/` to `.agents/`
-without rewriting configuration. For manual installation, copy those folders
-and the repository's `AGENTS.md` to the target.
+The installer copies `profiles/plus/codex/` into the target repository's `.codex/` and installs the adaptive orchestration skill from `profiles/plus/agents/`.
 
-For a global setup, merge `profiles/plus/codex/config.toml` into:
+## Routing contract
 
-`~/.codex/config.toml`
+- The primary Sol agent owns scope, decisions, delegation, and synthesis, not routine implementation.
+- Delegate only when a fresh context or separate ownership materially helps.
+- One bounded Luna worker is enough for ordinary coding work. It implements and runs focused validation through completion.
+- Specialists are conditional, not mandatory stages.
+- Do not inspect or independently review worker-authored code. Review it only after the user personally reports a bug and asks for diagnosis or repair.
+- Use `sol_worker` only when the user asks for Sol or Luna is impractical because of usage, credits, or availability.
+
+## Global installation
+
+Merge `profiles/plus/codex/config.toml` into `~/.codex/config.toml`, copy the role files to `~/.codex/agents/`, and copy `profiles/plus/agents/skills/adaptive-orchestrator/` to `~/.codex/skills/adaptive-orchestrator/`.
+
+The feature flag and its settings use separate tables:
 
 ```toml
-# Root
-model = "gpt-5.6-luna"
-model_reasoning_effort = "max"
+[features]
+multi_agent_v2 = true
 
-[agents]
-enabled = true
-max_concurrent_threads_per_session = 4
-default_subagent_model = "gpt-5.6-luna"
-default_subagent_reasoning_effort = "medium"
+[multi_agent_v2]
+min_wait_timeout_ms = 1500000
+default_wait_timeout_ms = 1500000
+max_wait_timeout_ms = 1500000
 ```
 
-Subagents keep their pinned models from `.codex/agents/*.toml`. Explorer,
-worker, tester, and researcher explicitly set `model = "gpt-5.6-luna"` and
-`model_reasoning_effort = "medium"`. The reviewer stays on GPT-6 Astra
-on the Plus plan too: it is a single, read-only, `low`-effort thread, and it
-gives you an independent review by a different model than the one that
-planned and wrote the change. If you want the whole session on Luna, change
-`model` in `.codex/agents/reviewer.toml` as well.
-
-See `token-usage.md` for how to measure the difference on your own tasks.
-
-For global installation, also copy `profiles/plus/codex/agents/` to
-`~/.codex/agents/` and `profiles/plus/agents/skills/astra-orchestrator/` to
-`~/.agents/skills/astra-orchestrator/`. Use the skill from the same profile
-as the configuration so its model and reasoning instructions match.
+`[features.multi_agent_v2]` is not valid in current Codex releases because `multi_agent_v2` is a Boolean feature flag rather than a table.

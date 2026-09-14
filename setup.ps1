@@ -53,7 +53,7 @@ function Read-Confirmation {
 function Read-Plan {
     [Console]::WriteLine('Codex plan:')
     [Console]::WriteLine('  1) Pro  - GPT-6 Astra orchestrates, GPT-5.6 Luna executes, GPT-6 Astra reviews')
-    [Console]::WriteLine('  2) Plus - GPT-5.6 Luna (max reasoning) orchestrates, GPT-5.6 Luna executes, GPT-6 Astra reviews')
+    [Console]::WriteLine('  2) Plus - GPT-5.6 Sol plans, GPT-5.6 Luna (xhigh) implements, review only after a user-reported bug')
 
     while ($true) {
         [Console]::Write('Select plan [1/2] (default 1): ')

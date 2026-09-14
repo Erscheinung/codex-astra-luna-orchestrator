@@ -1,10 +1,11 @@
-# Codex project instructions
+# Adaptive Codex orchestration
 
-For complex coding tasks, use the `astra-orchestrator` skill when its trigger conditions match.
+For non-trivial coding implementation that benefits from a fresh context, use the `adaptive-orchestrator` skill.
 
-The root agent owns architecture, decomposition, integration, and final verification.
-Prefer specialized subagents for bounded exploration, implementation, testing, review, and technical research.
+The primary agent owns scope, decisions, delegation, and synthesis, not routine implementation. Treat orchestration as adaptive routing, never as a fixed explorer -> worker -> tester -> reviewer pipeline.
 
-Do not delegate trivial work merely for parallelism.
-Do not let multiple implementation agents edit the same files without explicit ownership boundaries.
-User instructions always take precedence over this orchestration policy.
+For small coding work, one bounded worker is enough. Specialists are conditional and multiple writers need explicit non-overlapping ownership. The worker owns implementation and focused validation through completion.
+
+Do not inspect, diff-review, or independently review worker-authored code, and do not automatically spawn a reviewer. Review that code only after the user personally reports a bug and asks for diagnosis or repair.
+
+User instructions always take precedence.
