@@ -11,6 +11,13 @@ For small coding work, one bounded worker is enough. Specialists are conditional
 and multiple writers need explicit non-overlapping ownership. The worker owns
 implementation and focused validation through completion.
 
+## Human-readable subagent prompts
+
+- Write every subagent prompt as if you were briefing a capable human teammate who cannot see the parent conversation.
+- Use plain, complete sentences. State the desired outcome, why it matters, the exact scope or files owned, relevant context and constraints, acceptance criteria, and the focused checks to run.
+- Include concrete errors, commands, paths, and definitions the teammate needs. Do not rely on unexplained shorthand, internal labels, or implied context.
+- Keep the prompt concise but self-contained, and ask the subagent to report files changed, validation run, and any remaining uncertainty.
+
 ## Live subagent visibility
 
 - Give each spawned subagent a descriptive name and a concise task/role so the
