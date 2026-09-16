@@ -17,6 +17,13 @@ The installer copies `profiles/plus/codex/` into the target repository's `.codex
 
 Merge `profiles/plus/codex/config.toml` into `~/.codex/config.toml`, copy the role files to `~/.codex/agents/`, and copy `profiles/plus/agents/skills/adaptive-orchestrator/` to `~/.codex/skills/adaptive-orchestrator/`.
 
+The global stream-recovery hook is in profiles/plus/codex/hooks.json. Copy its
+Python implementation to ~/.codex/hooks/ and merge the Stop entry into the
+existing ~/.codex/hooks.json. Open /hooks in Codex to review and trust it.
+
+The hook makes no model request while detecting the provider error. Its native
+continue decision starts a new model turn, so that retry can consume tokens.
+
 The feature flag and its settings use separate tables:
 
 ```toml

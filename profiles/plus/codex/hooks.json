@@ -1,0 +1,18 @@
+{
+  "description": "Queue one native Codex continuation after a provider stream-disconnect error.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.codex/hooks/continue_on_stream_disconnect.py\" --watch",
+            "timeout": 600,
+            "async": true
+          }
+        ]
+      }
+    ]
+  }
+}

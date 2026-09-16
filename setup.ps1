@@ -14,8 +14,8 @@ $banner = @'
 |/_/   \_\____/ |_| |_| \_\/_/   \_\    |
 |                                       |
 |       O R C H E S T R A T O R         |
-|   Plan and orchestrate with Astra.    |
-|          Execute with Luna.           |
+|   Adaptive routing with available     |
+|          Codex models.                |
 +---------------------------------------+
 '@
 
@@ -52,23 +52,19 @@ function Read-Confirmation {
 
 function Read-Plan {
     [Console]::WriteLine('Codex plan:')
-    [Console]::WriteLine('  1) Pro  - GPT-6 Astra orchestrates, GPT-5.6 Luna executes, GPT-6 Astra reviews')
-    [Console]::WriteLine('  2) Plus - GPT-5.6 Sol plans, GPT-5.6 Luna (xhigh) implements, review only after a user-reported bug')
+    [Console]::WriteLine('  Plus - GPT-5.6 Sol plans, GPT-5.6 Luna (xhigh) implements, review only after a user-reported bug')
 
     while ($true) {
-        [Console]::Write('Select plan [1/2] (default 1): ')
+        [Console]::Write('Select plan [plus] (default plus): ')
         $answer = [Console]::In.ReadLine()
         if ($null -eq $answer) {
             throw 'Input ended before setup was complete.'
         }
 
         switch ($answer.Trim().ToLowerInvariant()) {
-            '1' { return 'pro' }
-            'pro' { return 'pro' }
-            '' { return 'pro' }
-            '2' { return 'plus' }
+            '' { return 'plus' }
             'plus' { return 'plus' }
-            default { [Console]::WriteLine('Please answer 1 (Pro) or 2 (Plus).') }
+            default { [Console]::WriteLine('Please choose plus.') }
         }
     }
 }
@@ -322,8 +318,6 @@ try {
 
     $installed = 0
     foreach ($component in '.codex', '.agents', 'AGENTS.md') {
-        if (Read-Confirmation -Prompt "Install ${component}?" -DefaultYes $true) {
-            if (Install-Component -Name $component -TargetDirectory $targetDirectory) {
         if (Read-Confirmation -Prompt "Install $component?" -DefaultYes $true) {
             $result = if ($component -eq '.codex') {
                 Install-Component -Name $component -TargetDirectory $targetDirectory -SourcePath (Join-Path $profileDirectory "codex")

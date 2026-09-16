@@ -3,7 +3,7 @@ name: adaptive-orchestrator
 description: Adaptively route non-trivial coding implementation to a bounded fresh-context worker without imposing an explorer/tester/reviewer pipeline. Use when implementation benefits from context separation, parallel ownership, or account-aware model routing; skip tiny work that is clearer in the primary context.
 ---
 
-# Adaptive orchestration — Plus profile
+# Adaptive orchestration
 
 Keep the GPT-5.6 Sol primary agent focused on scope, decisions, delegation, and synthesis. Delegate only when separation materially helps.
 
@@ -51,3 +51,12 @@ child.
 Do not automatically review worker output. The primary agent and orchestrator must not inspect or diff-review worker-authored code, and must not spawn a reviewer. Accept the worker's report and test evidence. Review that code only after the user personally reports a bug and asks for diagnosis or repair.
 
 User instructions take precedence. Preserve repository constraints, unrelated user changes, and the original authorization boundary.
+
+## Provider stream recovery
+
+If the global SessionStart watcher sees stream disconnected before completion:
+stream closed before response.completed, it may queue one native continuation
+with the prompt continue. This recovery is handled locally and does not invoke
+another model just to detect the error; the continuation itself is a new model
+turn and can consume tokens. Do not create an agent or a separate retry
+process for this condition.

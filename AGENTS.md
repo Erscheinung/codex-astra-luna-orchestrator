@@ -41,10 +41,11 @@ personally reports a bug and asks for diagnosis or repair.
 
 ## Stream recovery
 
-The global Codex Stop hook handles the provider error
+The global Codex SessionStart background watcher handles the provider error
 stream disconnected before completion: stream closed before response.completed
-by requesting one native continuation with the prompt continue. The hook is a
-lightweight local process; the retry itself is a new model turn and may use
-model tokens.
+by watching the live rollout and queuing one native continue message to the
+same thread. Detection is local; the continuation is a new model turn and may
+use model tokens. The watcher allows a later recovery after a successful turn
+and will not loop on an immediately failing recovery.
 
 User instructions always take precedence.

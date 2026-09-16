@@ -3,20 +3,15 @@
 Choose this preset for architecture changes, difficult debugging, and work
 where higher-confidence reasoning matters more than latency.
 
-This is an optional root override for the [Pro profile](full-orchestration.md),
-whose default is Astra `medium`. It leaves the installed Luna `max` roles
-and Astra `low` reviewer in place. If you adopt this override, update the
-installed skill's root-reasoning wording to match.
+It is an optional override for the supported Plus profile. Keep Luna workers at
+xhigh and raise only the Sol primary when the task benefits from deeper
+planning:
 
-Add or merge this into:
-
-`~/.codex/config.toml`
-
-```toml
-model = "gpt-6-astra"
-model_reasoning_effort = "high"
+~~~toml
+model = "gpt-5.6-sol"
+model_reasoning_effort = "medium"
 service_tier = "standard"
-```
+~~~
 
-If your Codex version does not support `service_tier`, remove that line and
-keep the model and reasoning settings.
+If the Codex version does not support service_tier, remove that line. Merge this
+into ~/.codex/config.toml without replacing unrelated settings.

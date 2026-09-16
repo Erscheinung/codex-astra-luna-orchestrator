@@ -13,8 +13,8 @@ cat <<'BANNER'
 |/_/   \_\____/ |_| |_| \_\/_/   \_\    |
 |                                       |
 |       O R C H E S T R A T O R         |
-|   Plan and orchestrate with Astra.    |
-|          Execute with Luna.           |
+|   Adaptive routing with available     |
+|          Codex models.                |
 +---------------------------------------+
 BANNER
 printf '%s\n' 'Interactive project setup'
@@ -119,20 +119,18 @@ merge_conflicts() {
 
 select_plan() {
     printf '%s\n' 'Codex plan:'
-    printf '%s\n' '  1) Pro  - GPT-6 Astra orchestrates, GPT-5.6 Luna executes, GPT-6 Astra reviews'
-    printf '%s\n' '  2) Plus - GPT-5.6 Sol plans, GPT-5.6 Luna (xhigh) implements, review only after a user-reported bug'
+    printf '%s\n' '  Plus - GPT-5.6 Sol plans, GPT-5.6 Luna (xhigh) implements, review only after a user-reported bug'
 
     while :; do
-        printf '%s' 'Select plan [1/2] (default 1): '
+        printf '%s' 'Select plan [plus] (default plus): '
         if ! IFS= read -r answer; then
             printf '\nSetup cancelled: input ended before setup was complete.\n' >&2
             exit 1
         fi
 
         case "$answer" in
-            1|pro|PRO|Pro|'') plan=pro; return ;;
-            2|plus|PLUS|Plus) plan=plus; return ;;
-            *) printf '%s\n' 'Please answer 1 (Pro) or 2 (Plus).' ;;
+            plus|PLUS|Plus|'') plan=plus; return ;;
+            *) printf '%s\n' 'Please choose plus.' ;;
         esac
     done
 }
@@ -213,7 +211,7 @@ copy_component() {
     component_installed=yes
 }
 
-plan=pro
+plan=plus
 select_plan
 
 installed=0
