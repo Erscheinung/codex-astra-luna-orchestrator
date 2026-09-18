@@ -7,7 +7,7 @@ copies profiles/plus/codex to .codex and profiles/plus/agents to .agents.
 The topology is intentionally adaptive:
 
 ~~~text
-Sol primary (low)
+Terra or Sol primary (medium/high/xhigh)
 └── Luna worker (xhigh), when a fresh context helps
     ├── optional explorer
     ├── optional researcher
@@ -15,7 +15,10 @@ Sol primary (low)
 ~~~
 
 The worker owns implementation and focused validation through completion.
-Specialists are conditional, and there is no automatic review stage.
+Specialists are conditional, and there is no automatic review stage. Routine
+workers must start with `fork_turns="none"` and a self-contained prompt.
+Use inherited parent history only when the user explicitly asks for that
+context to be shared.
 
 For project-scoped configuration, copy profiles/plus/codex/config.toml to
 .codex/config.toml. For personal setup, merge the settings into
@@ -30,6 +33,9 @@ enabled = true
 max_concurrent_threads_per_session = 4
 default_subagent_model = "gpt-5.6-luna"
 default_subagent_reasoning_effort = "xhigh"
+
+[features]
+multi_agent_v2 = true
 ~~~
 
 Use profiles/plus/codex/agents/ for named role files and

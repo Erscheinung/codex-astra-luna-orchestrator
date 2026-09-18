@@ -5,7 +5,7 @@ description: Adaptively route non-trivial coding implementation to a bounded fre
 
 # Adaptive orchestration
 
-Keep the GPT-5.6 Sol primary agent focused on scope, decisions, delegation, and synthesis. Delegate only when separation materially helps.
+For GPT-5.6 Terra or GPT-5.6 Sol root chats at medium, high, or xhigh reasoning, keep the primary agent focused on scope, decisions, delegation, and synthesis. Delegate only when separation materially helps.
 
 For small coding work, one `worker` should own implementation and focused validation end to end. For independent workstreams, give workers non-overlapping ownership. Add investigation or specialists only when actual risk warrants them.
 

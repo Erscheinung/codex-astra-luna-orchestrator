@@ -1,8 +1,10 @@
 # Codex: Sol planner + Luna implementation workers (Plus plan)
 #
 # The root uses GPT-5.6 Sol for planning and orchestration. Fresh-context
-# implementation workers use GPT-5.6 Luna at xhigh reasoning. Review is not an
-# automatic pipeline stage.
+# implementation workers use GPT-5.6 Luna at xhigh reasoning. Routine workers
+# start with a bounded fresh context (`fork_turns="none"`); inheriting the
+# parent history is an exception only when the user explicitly requests it.
+# Review is not an automatic pipeline stage.
 #
 # The installer writes this file as <repo>/.codex/config.toml when you
 # select the Plus plan. For a personal/global setup, merge these settings

@@ -6,9 +6,11 @@ The installer copies `profiles/plus/codex/` into the target repository's `.codex
 
 ## Routing contract
 
-- The primary Sol agent owns scope, decisions, delegation, and synthesis, not routine implementation.
+- For GPT-5.6 Terra or Sol root chats at medium, high, or xhigh reasoning, the primary agent owns scope, decisions, delegation, and synthesis, not routine implementation.
 - Delegate only when a fresh context or separate ownership materially helps.
 - One bounded Luna worker is enough for ordinary coding work. It implements and runs focused validation through completion.
+- Routine implementation workers start in a fresh bounded context: spawn with `fork_turns="none"` and give a complete self-contained prompt.
+- Full parent-history sharing is an exception and requires an explicit user request.
 - Specialists are conditional, not mandatory stages.
 - Do not inspect or independently review worker-authored code. Review it only after the user personally reports a bug and asks for diagnosis or repair.
 - Use `sol_worker` only when the user asks for Sol or Luna is impractical because of usage, credits, or availability.
