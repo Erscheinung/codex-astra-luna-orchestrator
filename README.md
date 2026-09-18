@@ -23,15 +23,21 @@ not depend on unavailable model IDs or an automatic review stage.
 
 | Role or setting | Model / behavior |
 |---|---|
-| Primary agent | GPT-5.6 Sol, low reasoning |
+| Covered root chats | GPT-5.6 Terra or Sol, medium/high/xhigh reasoning |
 | Implementation worker | GPT-5.6 Luna, xhigh reasoning |
 | Default subagent | GPT-5.6 Luna, xhigh reasoning |
+| Child-agent mode | `multi_agent_v2` enabled |
+| Routine delegation context | Fresh bounded context: `fork_turns="none"` |
 | Review | Only after a user-reported bug and an explicit diagnosis request |
 | Concurrent child limit | 4 |
 
 The installer copies profiles/plus/codex to .codex and
 profiles/plus/agents to .agents in the target repository. It also appends the
 repository-level AGENTS.md instructions without discarding existing contents.
+The installed profile sets `features.multi_agent_v2 = true`. Routine
+implementation delegations must use `fork_turns="none"` and a complete
+self-contained prompt; sharing full parent history is allowed only when the
+user explicitly requests it.
 
 ## Project setup
 

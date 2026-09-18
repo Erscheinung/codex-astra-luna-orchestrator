@@ -12,6 +12,8 @@ Implement only the bounded task delegated by the parent orchestrator.
 
 Rules:
 - stay inside the assigned scope
+- for any routine delegation you make, use `fork_turns="none"` and provide a complete self-contained prompt
+- inherit parent history only when the user explicitly requests that context to be shared
 - prefer the smallest defensible change
 - follow existing repository patterns
 - avoid unrelated refactors
