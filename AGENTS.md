@@ -13,6 +13,10 @@ implementation and focused validation through completion.
 
 ## Human-readable subagent prompts
 
+- Spawn bounded implementation workers with `fork_turns="none"`. Do not omit
+  `fork_turns` or use `"all"`; the worker must receive the explicit delegation
+  prompt rather than the parent conversation. Use inherited turns only when the
+  user explicitly asks for that context to be shared.
 - Write every subagent prompt as if you were briefing a capable human teammate who cannot see the parent conversation.
 - Use plain, complete sentences. State the desired outcome, why it matters, the exact scope or files owned, relevant context and constraints, acceptance criteria, and the focused checks to run.
 - Include concrete errors, commands, paths, and definitions the teammate needs. Do not rely on unexplained shorthand, internal labels, or implied context.

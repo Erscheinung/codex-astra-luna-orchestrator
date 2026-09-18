@@ -13,6 +13,12 @@ Use the GPT-5.6 Luna `worker` at xhigh by default. Use `sol_worker` only when th
 
 Every delegation states a concrete outcome, bounded scope, constraints, and acceptance criteria. Workers finish routine choices instead of repeatedly handing them back.
 
+Spawn bounded implementation workers with `fork_turns="none"`. Never omit
+`fork_turns` or use `"all"` for routine delegation: the worker must start from
+its role instructions, applicable repository instructions, and the complete
+self-contained delegation prompt rather than the parent conversation. Inherit
+parent turns only when the user explicitly asks for that context to be shared.
+
 ## Live progress
 
 Use descriptive agent names and concise task descriptions so the native command
