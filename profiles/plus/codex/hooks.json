@@ -1,5 +1,5 @@
 {
-  "description": "Queue one native Codex continuation after a provider stream-disconnect error.",
+  "description": "Queue one native Codex continuation after a provider error.",
   "hooks": {
     "SessionStart": [
       {
