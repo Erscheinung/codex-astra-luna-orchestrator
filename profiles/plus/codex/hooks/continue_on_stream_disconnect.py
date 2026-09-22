@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Recover Codex provider stream disconnects without blocking normal turns.
+"""Recover Codex provider errors without blocking normal turns.
 
 The Stop hook is intentionally conservative: current Codex does not expose
 transport errors to Stop hooks, and looking back through the transcript there
 would re-trigger a stale error on the next successful turn.  The SessionStart
 background mode watches the live rollout instead and queues one native
-"continue" after a newly-written task_complete error.
+"continue" after a newly-written rollout error.
 """
 
 from __future__ import annotations
@@ -48,6 +48,11 @@ def should_continue(event: dict[str, Any]) -> bool:
     if event.get("stop_hook_active"):
         return False
 
+    # Error details vary by provider, so an explicit non-null error is the
+    # recovery signal rather than a particular code or message.
+    if event.get("error") is not None:
+        return True
+
     if contains_marker(event.get("last_assistant_message")):
         return True
 
@@ -66,11 +71,10 @@ class WatchState:
 
     def observe(self, record: dict[str, Any]) -> bool:
         payload = record.get("payload")
-        if not isinstance(payload, dict) or payload.get("type") != "task_complete":
-            return False
+        event = payload if isinstance(payload, dict) else record
 
-        turn_id = payload.get("turn_id")
-        if contains_marker(payload.get("error")):
+        turn_id = event.get("turn_id")
+        if event.get("error") is not None:
             if self.recovery_queued:
                 return False
             self.recovery_queued = True

@@ -93,7 +93,7 @@ python3 ~/.codex/hooks/continue_on_stream_disconnect.py
 ~~~
 
 Open /hooks in Codex to review and trust the changed non-managed hook. The hook
-itself makes no model request. When the exact provider error is detected,
+itself makes no model request. When a provider error is detected,
 Codex's native Stop-hook continuation creates one new user-equivalent prompt,
 continue. That retry is a new model turn and may consume tokens; the local
 error detection does not.

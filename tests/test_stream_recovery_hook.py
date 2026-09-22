@@ -43,6 +43,21 @@ class StreamRecoveryHookTests(unittest.TestCase):
             {"decision": "block", "reason": "continue"},
         )
 
+    def test_top_level_error_event_requests_a_continuation(self):
+        event = {
+            "error": {
+                "code": "UPSTREAM_LLM_ERROR",
+                "message": "invalid_encrypted_content",
+                "type": "upstream_error",
+            },
+            "type": "error",
+        }
+
+        self.assertEqual(
+            self.run_hook(event),
+            {"decision": "block", "reason": "continue"},
+        )
+
     def test_transcript_error_does_not_block_a_later_stop(self):
         with tempfile.TemporaryDirectory() as directory:
             transcript = Path(directory) / "rollout.jsonl"
@@ -80,6 +95,20 @@ class StreamRecoveryHookTests(unittest.TestCase):
         self.assertFalse(state.observe(error))
         self.assertFalse(state.observe(success))
         self.assertTrue(state.observe(error))
+
+    def test_watcher_queues_for_a_top_level_error_event(self):
+        state = HOOK_MODULE.WatchState()
+        error = {
+            "error": {
+                "code": "UPSTREAM_LLM_ERROR",
+                "message": "invalid_encrypted_content",
+                "type": "upstream_error",
+            },
+            "type": "error",
+        }
+
+        self.assertTrue(state.observe(error))
+        self.assertFalse(state.observe(error))
 
     def test_stop_hook_active_prevents_a_retry_loop(self):
         self.assertIsNone(
