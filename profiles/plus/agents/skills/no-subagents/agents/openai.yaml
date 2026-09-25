@@ -1,0 +1,5 @@
+interface:
+  display_name: "No subagents"
+  short_description: "Complete this task directly without delegating"
+policy:
+  allow_implicit_invocation: false
