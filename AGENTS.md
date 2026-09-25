@@ -1,5 +1,20 @@
 # Adaptive Codex orchestration
 
+## Prompt-level opt-out (check before delegation)
+
+When the user directs `$no-subagents`, says "no subagents" or "do this yourself",
+or supplies `/no-subagents` as prompt text, the primary agent owns implementation
+and validation directly. Do not spawn, delegate, or resume workers for that task,
+and do not ask whether to delegate. This overrides the delegation defaults below
+and in adaptive-orchestrator; no configuration changes are needed.
+
+Keep the opt-out through task follow-ups and retries. A new unrelated task uses
+normal routing unless the user requested a chat-wide opt-out. "Use subagents
+again" restores normal routing. Quoted examples or requests to document the
+marker do not activate it. If scope is unclear, stay solo without asking.
+
+## Default routing
+
 For non-trivial coding implementation that benefits from a fresh context, use
 the adaptive-orchestrator skill. Use only model IDs available to the account.
 

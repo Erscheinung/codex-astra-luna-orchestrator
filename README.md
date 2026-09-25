@@ -10,7 +10,7 @@ not depend on unavailable model IDs or an automatic review stage.
 .
 ├── profiles/plus/
 │   ├── codex/                         # config, role files, and Stop hook
-│   └── agents/skills/adaptive-orchestrator/
+│   └── agents/skills/                # adaptive-orchestrator and no-subagents
 ├── guides/
 ├── scripts/token_usage.py
 ├── tests/
@@ -103,6 +103,38 @@ follow-up before treating it as failed or rerouting its task. Do not repeatedly
 retry a child that remains unavailable.
 
 ## Adaptive orchestration
+
+To skip delegation for a task, include the skill in the same prompt:
+
+~~~text
+$no-subagents Fix the login validation and run the relevant tests.
+~~~
+
+Plain "no subagents" or "do this yourself" also works through AGENTS.md. The
+primary agent implements and validates directly, without a confirmation turn or
+disabling adaptive-orchestrator. The preference covers task follow-ups and
+retries. Add "for this whole chat" for chat-wide scope; say "use subagents again"
+to restore normal routing. Otherwise, unrelated tasks use normal routing.
+
+Use `$no-subagents` as the supported skill invocation. `/no-subagents` is only
+recognized if it reaches the model as prompt text; this repository does not
+register a native slash command. Codex supports explicit skill mentions with
+`$` or the `/skills` picker ([official skill documentation](https://learn.chatgpt.com/docs/build-skills)).
+The skill is explicit-only, so Codex does not automatically select it for other
+tasks. This is an instruction-level preference, not a runtime tool lock, and
+does not promise zero token overhead; it avoids a separate routing question.
+
+Both project installers include the skill when installing `.agents`. Existing
+installations should update `.agents` and the AGENTS.md instructions. For just
+the global opt-out skill, run from this repository:
+
+~~~bash
+mkdir -p ~/.agents/skills/no-subagents
+cp -R profiles/plus/agents/skills/no-subagents/. ~/.agents/skills/no-subagents/
+~~~
+
+If the skill does not appear, restart Codex. No model or agent setting changes
+are required.
 
 Use the adaptive-orchestrator skill for work where a fresh context materially
 helps. A normal implementation task gets one bounded Luna worker that owns its

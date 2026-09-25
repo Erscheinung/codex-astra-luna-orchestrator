@@ -1,9 +1,19 @@
 ---
 name: adaptive-orchestrator
-description: Adaptively route non-trivial coding implementation to a bounded fresh-context worker without imposing an explorer/tester/reviewer pipeline. Use when implementation benefits from context separation, parallel ownership, or account-aware model routing; skip tiny work that is clearer in the primary context.
+description: Route non-trivial coding work to bounded workers when separation helps. Skip when the user requests no subagents or work is clearer in the primary context.
 ---
 
 # Adaptive orchestration
+
+Before routing, honor `$no-subagents`, "no subagents", "do this yourself", or
+`/no-subagents` supplied as an instruction in prompt text. The primary agent
+implements and validates directly; do not spawn, delegate, or resume workers,
+ask for delegation confirmation, or change configuration. This overrides the
+delegation defaults in this skill and project instructions. Keep it through the
+task's follow-ups and retries; use normal routing for unrelated tasks unless
+the user requested chat-wide scope. "Use subagents again" restores normal
+routing. Mentions in quoted examples or documentation requests do not activate
+the opt-out. If scope is unclear, stay solo without asking.
 
 For GPT-5.6 Terra or GPT-5.6 Sol root chats at medium, high, or xhigh reasoning, keep the primary agent focused on scope, decisions, delegation, and synthesis. Delegate only when separation materially helps.
 
