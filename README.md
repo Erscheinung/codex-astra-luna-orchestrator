@@ -23,9 +23,9 @@ not depend on unavailable model IDs or an automatic review stage.
 
 | Role or setting | Model / behavior |
 |---|---|
-| Covered root chats | GPT-5.6 Terra or Sol, medium/high/xhigh reasoning |
-| Implementation worker | GPT-5.6 Luna, xhigh reasoning |
-| Default subagent | GPT-5.6 Luna, xhigh reasoning |
+| Covered root chats | GPT-5.6 Terra or GPT-6.1 Sol, medium/high/xhigh reasoning |
+| Implementation worker | GPT-6 Luna, xhigh reasoning |
+| Default subagent | GPT-6 Luna, xhigh reasoning |
 | Child-agent mode | `multi_agent_v2` enabled |
 | Routine delegation context | Fresh bounded context: `fork_turns="none"` |
 | Review | Only after a user-reported bug and an explicit diagnosis request |

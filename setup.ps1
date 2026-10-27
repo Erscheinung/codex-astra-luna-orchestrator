@@ -52,7 +52,7 @@ function Read-Confirmation {
 
 function Read-Plan {
     [Console]::WriteLine('Codex plan:')
-    [Console]::WriteLine('  Plus - GPT-5.6 Sol plans, GPT-5.6 Luna (xhigh) implements, review only after a user-reported bug')
+    [Console]::WriteLine('  Plus - GPT-6.1 Sol plans, GPT-6 Luna (xhigh) implements, review only after a user-reported bug')
 
     while ($true) {
         [Console]::Write('Select plan [plus] (default plus): ')

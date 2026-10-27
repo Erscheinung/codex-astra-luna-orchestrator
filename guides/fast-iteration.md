@@ -4,7 +4,7 @@ Choose this preset when latency matters. It keeps the supported adaptive
 routing while selecting the fast service tier for the Sol primary:
 
 ~~~toml
-model = "gpt-5.6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "low"
 service_tier = "fast"
 ~~~

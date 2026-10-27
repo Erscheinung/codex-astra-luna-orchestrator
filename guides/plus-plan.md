@@ -1,12 +1,12 @@
 # Plus Plan
 
-Choose this profile for a GPT-5.6 Sol primary agent at low reasoning and fresh-context GPT-5.6 Luna implementation workers at xhigh reasoning.
+Choose this profile for a GPT-6.1 Sol primary agent at low reasoning and fresh-context GPT-6 Luna implementation workers at xhigh reasoning.
 
 The installer copies `profiles/plus/codex/` into the target repository's `.codex/` and installs the adaptive orchestration skill from `profiles/plus/agents/`.
 
 ## Routing contract
 
-- For GPT-5.6 Terra or Sol root chats at medium, high, or xhigh reasoning, the primary agent owns scope, decisions, delegation, and synthesis, not routine implementation.
+- For GPT-5.6 Terra or GPT-6.1 Sol root chats at medium, high, or xhigh reasoning, the primary agent owns scope, decisions, delegation, and synthesis, not routine implementation.
 - Delegate only when a fresh context or separate ownership materially helps.
 - One bounded Luna worker is enough for ordinary coding work. It implements and runs focused validation through completion.
 - Routine implementation workers start in a fresh bounded context: spawn with `fork_turns="none"` and give a complete self-contained prompt.

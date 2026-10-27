@@ -20,9 +20,9 @@ class PlusProfileTests(unittest.TestCase):
     def test_model_and_multi_agent_defaults(self):
         config = CONFIG_PATH.read_text(encoding="utf-8")
 
-        self.assertIn('model = "gpt-5.6-sol"', config)
+        self.assertIn('model = "gpt-6.1-sol"', config)
         self.assertIn('[agents]\nenabled = true', config)
-        self.assertIn('default_subagent_model = "gpt-5.6-luna"', config)
+        self.assertIn('default_subagent_model = "gpt-6-luna"', config)
         self.assertIn('default_subagent_reasoning_effort = "xhigh"', config)
         self.assertIn('[features]\nmulti_agent_v2 = true', config)
 
@@ -32,7 +32,7 @@ class PlusProfileTests(unittest.TestCase):
 
         self.assertIn('fork_turns="none"', skill)
         self.assertIn("user explicitly asks", skill)
-        self.assertIn('model = "gpt-5.6-luna"', worker)
+        self.assertIn('model = "gpt-6-luna"', worker)
         self.assertIn('model_reasoning_effort = "xhigh"', worker)
         self.assertIn('fork_turns="none"', worker)
 

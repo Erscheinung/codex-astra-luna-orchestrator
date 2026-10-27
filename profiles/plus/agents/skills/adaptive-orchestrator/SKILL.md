@@ -15,11 +15,11 @@ the user requested chat-wide scope. "Use subagents again" restores normal
 routing. Mentions in quoted examples or documentation requests do not activate
 the opt-out. If scope is unclear, stay solo without asking.
 
-For GPT-5.6 Terra or GPT-5.6 Sol root chats at medium, high, or xhigh reasoning, keep the primary agent focused on scope, decisions, delegation, and synthesis. Delegate only when separation materially helps.
+For GPT-5.6 Terra or GPT-6.1 Sol root chats at medium, high, or xhigh reasoning, keep the primary agent focused on scope, decisions, delegation, and synthesis. Delegate only when separation materially helps.
 
 For small coding work, one `worker` should own implementation and focused validation end to end. For independent workstreams, give workers non-overlapping ownership. Add investigation or specialists only when actual risk warrants them.
 
-Use the GPT-5.6 Luna `worker` at xhigh by default. Use `sol_worker` only when the user asks for Sol or Luna is impractical because of usage, credits, or availability. Model assignments live in Codex configuration and agent TOML files.
+Use the GPT-6 Luna `worker` (`gpt-6-luna`) at xhigh by default. Use `sol_worker` only when the user asks for Sol or GPT-6 Luna is impractical because of usage, credits, or availability. Model assignments live in Codex configuration and agent TOML files.
 
 Every delegation states a concrete outcome, bounded scope, constraints, and acceptance criteria. Workers finish routine choices instead of repeatedly handing them back.
 

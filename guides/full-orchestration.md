@@ -25,13 +25,13 @@ For project-scoped configuration, copy profiles/plus/codex/config.toml to
 ~/.codex/config.toml rather than replacing unrelated configuration:
 
 ~~~toml
-model = "gpt-5.6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "low"
 
 [agents]
 enabled = true
 max_concurrent_threads_per_session = 4
-default_subagent_model = "gpt-5.6-luna"
+default_subagent_model = "gpt-6-luna"
 default_subagent_reasoning_effort = "xhigh"
 
 [features]

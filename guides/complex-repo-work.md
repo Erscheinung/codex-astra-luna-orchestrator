@@ -8,7 +8,7 @@ xhigh and raise only the Sol primary when the task benefits from deeper
 planning:
 
 ~~~toml
-model = "gpt-5.6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 service_tier = "standard"
 ~~~

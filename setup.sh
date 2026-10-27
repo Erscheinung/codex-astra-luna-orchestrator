@@ -119,7 +119,7 @@ merge_conflicts() {
 
 select_plan() {
     printf '%s\n' 'Codex plan:'
-    printf '%s\n' '  Plus - GPT-5.6 Sol plans, GPT-5.6 Luna (xhigh) implements, review only after a user-reported bug'
+    printf '%s\n' '  Plus - GPT-6.1 Sol plans, GPT-6 Luna (xhigh) implements, review only after a user-reported bug'
 
     while :; do
         printf '%s' 'Select plan [plus] (default plus): '

@@ -12,7 +12,7 @@ Add or merge this into:
 `~/.codex/config.toml`
 
 ```toml
-model = "gpt-5.6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 service_tier = "fast"
 ```
